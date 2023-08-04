@@ -18,7 +18,7 @@ def format_to_tabular(input_file, output_file):
 
     # 'data' é o dicionário que contém os dados fornecidos
 
-    # Definir o prefixo para as chaves que você deseja iterar
+    # Loop para criar um novo dicionário (data_formated) com as informaç~eos de interesse
     for key in data:
         for k, v in data[key].items():
             splited = k.split("_")  # Dividir a chave em partes usando o caractere '_'
