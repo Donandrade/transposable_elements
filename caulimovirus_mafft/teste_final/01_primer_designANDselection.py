@@ -1,4 +1,5 @@
 from Bio import AlignIO, SeqIO
+from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 import argparse
 import subprocess
@@ -17,7 +18,8 @@ alignment = AlignIO.read(arquivo_alinhamento, "fasta")
 # Cria uma lista de objetos SeqRecord para armazenar as sequências
 sequences = []
 for record in alignment:
-    seq_record = SeqRecord(record.seq.replace("-", ""), id=record.id, description="")
+    seq_record = SeqRecord(Seq(str(record.seq).replace("-", "")), id=record.id, description="")
+    # seq_record = SeqRecord(record.seq.replace("-", ""), id=record.id, description="")
     sequences.append(seq_record)
 
 # Salva as sequências individuais não alinhadas em formato FASTA
@@ -48,7 +50,7 @@ def generate_primer3_input(output_file, sequence_id, sequence_template):
         f.write("PRIMER_MAX_SELF_END_TH=1.0\n")# Máxima energia de emparelhamento no extremo 3'
         f.write("PRIMER_PAIR_MAX_COMPL_ANY_TH=1.0\n") # Máxima energia de emparelhamento do par de primers
         f.write("PRIMER_PAIR_MAX_COMPL_END_TH=1.0\n") # Máxima energia de emparelhamento do par de primers no extremo 3'
-        f.write("PRIMER_THERMODYNAMIC_PARAMETERS_PATH=/home/emasilva/primer3/src/primer3_config/\n")
+        f.write("PRIMER_THERMODYNAMIC_PARAMETERS_PATH=/blue/munoz/deandradesilvae/colaborations/breno/transposable_elements/primer3/src/primer3_config/\n")
         f.write("=\n")
 
 # Caminho para o arquivo FASTA contendo as sequências
@@ -65,14 +67,14 @@ with open(fasta_file) as f:
         generate_primer3_input(output_file, sequence_id, sequence_template)
 
 # Comando para executar o primer3_core com redirecionamento de entrada e saída
-command = "primer3_core < input.p3 > output.p3"
+# command = "primer3_core < input.p3 > output.p3"
 
-try:
+# try:
     # Executa o comando usando o subprocess
-    subprocess.run(command, shell=True, check=True)
-    print("primer3_core executado com sucesso.")
-except subprocess.CalledProcessError as e:
-    print(f"Erro ao executar o primer3_core: {e}")
+    # subprocess.run(command, shell=True, check=True)
+    # print("primer3_core executado com sucesso.")
+# except subprocess.CalledProcessError as e:
+    # print(f"Erro ao executar o primer3_core: {e}")
 
 
 def format_to_tabular(input_file, output_file, output_file2):
@@ -128,7 +130,7 @@ if __name__ == "__main__":
     output_file = "output_p3.tsv"  # O resultado será salvo nesse arquivo
     output_file2 = "input_ePCR.tsv"  # O resultado será salvo nesse arquivo no formato de entrada para a e-PCR
     format_to_tabular(input_file, output_file, output_file2)
-    comando_epcr = "e-PCR input_ePCR.tsv sequencias.fasta M=400 N=3 T=3 G=3 U=+ O=primerBlast.txt"
+    comando_epcr = "./e-PCR input_ePCR.tsv sequencias.fasta M=400 N=3 T=3 G=3 U=+ O=primerBlast.txt"
     try:
         # Executa o comando usando o subprocess
         subprocess.run(comando_epcr, shell=True, check=True)
