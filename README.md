@@ -78,9 +78,9 @@ python src/01_primer_designANDselection.py <alignment_file> <ePCR_results>
 
 The script takes:
 
-For Step 1: A multiple sequence alignment file in FASTA format (e.g., ../caulimovirus_mafft/data/cluster_01_caulimovirus.aln).
+For Step 1: A multiple sequence alignment file in FASTA format (e.g., `../caulimovirus_mafft/data/cluster_01_caulimovirus.aln`).
 
-For Step 2: The output from e-PCR, specifically the primerBlast.txt file (e.g., ../caulimovirus_mafft/output/primerBlast.txt).
+For Step 2: The output from e-PCR, specifically the primerBlast.txt file (e.g., `../caulimovirus_mafft/output/primerBlast.txt`).
 The script takes:
 
 A multiple sequence alignment file in FASTA format.
