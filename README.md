@@ -99,7 +99,7 @@ The script generates several output files in the `output/` directory:
 
 ## e-PCR Notice
 
-The e-PCR software was originally discontinued, as documented in Schuler (1998). However, in this repository, we use it strictly for performing electronic PCR (e-PCR) to validate primers in silico. The binary version of e-PCR is included in the bin/ directory and must be properly referenced in the script.
+The e-PCR software was originally discontinued, as documented in Schuler (1998). However, in this repository, we use it strictly for performing electronic PCR (e-PCR) to validate primers in silico. The binary version of e-PCR is included in the `bin/` directory and must be properly referenced in the script.
 
 ## Parallel Execution
 The script utilizes multiprocessing to:
