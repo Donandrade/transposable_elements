@@ -2,6 +2,10 @@
 
 This repository contains a pipeline for designing and selecting primers using Primer3, followed by in silico validation through e-PCR. The script is optimized for parallel execution to improve performance.
 
+## Workflow
+
+![Pipeline Workflow](img/fluxogram.png)
+
 ## Table of Contents
 - [Installation](#installation)
 - [Configuration](#configuration)

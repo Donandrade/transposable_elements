@@ -2,4 +2,13 @@ caulimovirus_mafft/cl01/
 caulimovirus_mafft/formata_output_primer3.py
 caulimovirus_mafft/formata_primer3.py
 caulimovirus_mafft/output/*
-output/*
+output/input_ePCR_part_0.tsv
+output/input_ePCR_part_1.tsv
+output/input_ePCR_part_2.tsv
+output/input_ePCR_part_3.tsv
+output/input_ePCR.tsv
+output/input.p3
+output/output.p3
+output/output_p3.tsv
+output/primerBlast.txt
+output/sequencias.fasta
