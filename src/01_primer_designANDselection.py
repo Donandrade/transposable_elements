@@ -7,7 +7,7 @@ import subprocess
 import sys
 import os
 
-file_name = '../output/sequencias.fasta'
+file_name = 'output/sequencias.fasta'
 
 num_sequences = 0
 
@@ -33,7 +33,7 @@ def dividir_arquivo(input_file, num_partes):
 
         parte = linhas[i * tamanho_parte: (i + 1) * tamanho_parte] if i < num_partes - 1 else linhas[i * tamanho_parte:]
 
-        parte_nome = f"../output/input_ePCR_part_{i}.tsv"
+        parte_nome = f"output/input_ePCR_part_{i}.tsv"
 
         with open(parte_nome, "w") as f_part:
 
@@ -46,7 +46,7 @@ def dividir_arquivo(input_file, num_partes):
 def executar_epcr(arquivo_parte, resultado_parte):
 
     """Executa o e-PCR em uma parte do arquivo"""
-    comando_epcr = f"../bin/e-PCR {arquivo_parte} ../output/sequencias.fasta M=400 N=3 T=3 G=3 U=+ O={resultado_parte}"
+    comando_epcr = f"bin/e-PCR {arquivo_parte} output/sequencias.fasta M=400 N=3 T=3 G=3 U=+ O={resultado_parte}"
 
     try:
 
@@ -77,7 +77,7 @@ def rodar_epcr_em_paralelo(input_file, num_processos):
 
     for i, arquivo_parte in enumerate(arquivos_divididos):
 
-        resultado_parte = f"../output/primerBlast_part_{i}.txt"
+        resultado_parte = f"output/primerBlast_part_{i}.txt"
 
         resultados_parciais.append(resultado_parte)
 
@@ -96,7 +96,7 @@ def rodar_epcr_em_paralelo(input_file, num_processos):
         p.join()
 
     # 5. Unir resultados em um único arquivo
-    with open("../output/primerBlast.txt", "w") as resultado_final:
+    with open("output/primerBlast.txt", "w") as resultado_final:
 
         for resultado_parte in resultados_parciais:
 
@@ -211,7 +211,7 @@ def run_primer3_epcr(input_file, output_file, output_file2):
         sequences.append(seq_record)
 
     # Salva as sequências individuais não alinhadas em formato FASTA
-    SeqIO.write(sequences, "../output/sequencias.fasta", "fasta")
+    SeqIO.write(sequences, "output/sequencias.fasta", "fasta")
 
 
     # Função para gerar o arquivo de configuração "input.p3" para cada sequência
@@ -238,14 +238,14 @@ def run_primer3_epcr(input_file, output_file, output_file2):
             f.write("PRIMER_MAX_SELF_END_TH=1.0\n")# Máxima energia de emparelhamento no extremo 3'
             f.write("PRIMER_PAIR_MAX_COMPL_ANY_TH=1.0\n") # Máxima energia de emparelhamento do par de primers
             f.write("PRIMER_PAIR_MAX_COMPL_END_TH=1.0\n") # Máxima energia de emparelhamento do par de primers no extremo 3'
-            f.write("PRIMER_THERMODYNAMIC_PARAMETERS_PATH=../bin/primer3/src/primer3_config/\n") # caminho para o arquivo de parâmetros termodinâmicos, esse caminho precisa ser modificado para o local do computador do usuário
+            f.write("PRIMER_THERMODYNAMIC_PARAMETERS_PATH=bin/primer3/src/primer3_config/\n") # caminho para o arquivo de parâmetros termodinâmicos, esse caminho precisa ser modificado para o local do computador do usuário
             f.write("=\n")
             
     # Caminho para o arquivo FASTA contendo as sequências
-    fasta_file = "../output/sequencias.fasta"
+    fasta_file = "output/sequencias.fasta"
 
     # Caminho para o arquivo de configuração "input.p3" que será gerado
-    output_file = "../output/input.p3"
+    output_file = "output/input.p3"
 
     num_sequences = 0
 
@@ -261,7 +261,7 @@ def run_primer3_epcr(input_file, output_file, output_file2):
             generate_primer3_input(output_file, sequence_id, sequence_template)
 
     # Comando para executar o primer3_core com redirecionamento de entrada e saída
-    command = "../bin/primer3/src/primer3_core < ../output/input.p3 > ../output/output.p3"
+    command = "bin/primer3/src/primer3_core < output/input.p3 > output/output.p3"
 
     try:
     
@@ -280,8 +280,21 @@ def run_primer3_epcr(input_file, output_file, output_file2):
 if os.path.exists(file_path):
 
     print("##########################################################################")
-    answer = input("WORNING! Se você responder 'sim' para a pergunta a seguir, o script considera que você já executou esse script antes e possui dois princiapis arquivos nesse diretório: 'primerBlast.txt' e 'sequencias.fasta'. Verifique se esses arquivos estão neste diretório.\n\nVocê já executou esse script anteriormente? Responta Yes ou No: ")
-    
+
+    answer = input(f"""⚠️ WARNING! ⚠️ 
+
+    If you answer 'Yes' to the following question, the script assumes that you have already executed it before and that two main files are present in the output directory: 'output/primerBlast.txt' and 'output/sequencias.fasta'. Please ensure these files exist before proceeding.
+
+    📌 If these files are present, the script should be executed as follows:
+        🔹 USAGE: python src/01_primer_designANDselection.py caulimovirus_mafft/data/cluster_01_caulimovirus.aln output/primerBlast.txt 
+
+    ❓ Have you executed this script before?
+        ➤ Type 'Yes' if the files are already in the output directory.
+        ➤ Type 'No' if you want to start a new run.
+   
+    👉 Answer (Yes/No): """)
+
+
     if(answer.lower() == "yes"): 
     
     # Loop para processar cada sequência no arquivo FASTA e gerar o arquivo de configuração
@@ -360,7 +373,7 @@ if os.path.exists(file_path):
         # DICIONARIO QUERECEBE COMO VALOR, A CONTAGEM DE ALVOS PARA CADA PRIMER DE MODO CRESCENTE
         dic_contagem = dict(sorted(dic_contagem.items(), key=lambda item: item[1], reverse = True))
         
-        primers = open("../output/output_p3.tsv", 'r').readlines()
+        primers = open("output/output_p3.tsv", 'r').readlines()
 
         best_primers = []
         
@@ -406,7 +419,7 @@ if os.path.exists(file_path):
 
     elif(answer.lower() == "no"):
 
-        files = ["../output/input.p3", "../output/input_ePCR.tsv", "../output/output.p3", "../output/primerBlast.txt", "../output/sequencias.fasta"]
+        files = ["output/input.p3", "output/input_ePCR.tsv", "output/output.p3", "output/primerBlast.txt", "output/sequencias.fasta"]
 
         for i in files:
 
@@ -425,11 +438,11 @@ if os.path.exists(file_path):
         
         if __name__ == "__main__":
         
-            input_file = "../output/output.p3"  # Coloque o nome do arquivo de entrada aqui
+            input_file = "output/output.p3"  # Coloque o nome do arquivo de entrada aqui
             
-            output_file = "../output/output_p3.tsv"  # O resultado será salvo nesse arquivo
+            output_file = "output/output_p3.tsv"  # O resultado será salvo nesse arquivo
             
-            output_file2 = "../output/input_ePCR.tsv"  # O resultado será salvo nesse arquivo no formato de entrada para a e-PCR
+            output_file2 = "output/input_ePCR.tsv"  # O resultado será salvo nesse arquivo no formato de entrada para a e-PCR
             
             run_primer3_epcr(input_file, output_file, output_file2)
             
@@ -437,7 +450,7 @@ if os.path.exists(file_path):
 
             num_processos = min(multiprocessing.cpu_count(), 4)  # Define o número de processos (4 ou número de CPUs)
 
-            rodar_epcr_em_paralelo("../output/input_ePCR.tsv", num_processos)
+            rodar_epcr_em_paralelo("output/input_ePCR.tsv", num_processos)
 
             # comando_epcr = "bin/e-PCR output/input_ePCR.tsv output/sequencias.fasta M=400 N=3 T=3 G=3 U=+ O=output/primerBlast.txt"
             
@@ -457,11 +470,11 @@ else:
 
     if __name__ == "__main__":
     
-        input_file = "../output/output.p3"  # Coloque o nome do arquivo de entrada aqui
+        input_file = "output/output.p3"  # Coloque o nome do arquivo de entrada aqui
         
-        output_file = "../output/output_p3.tsv"  # O resultado será salvo nesse arquivo
+        output_file = "output/output_p3.tsv"  # O resultado será salvo nesse arquivo
         
-        output_file2 = "../output/input_ePCR.tsv"  # O resultado será salvo nesse arquivo no formato de entrada para a e-PCR
+        output_file2 = "output/input_ePCR.tsv"  # O resultado será salvo nesse arquivo no formato de entrada para a e-PCR
         
         run_primer3_epcr(input_file, output_file, output_file2)
         
@@ -469,22 +482,8 @@ else:
 
         num_processos = min(multiprocessing.cpu_count(), 4)  # Define o número de processos (4 ou número de CPUs)
 
-        rodar_epcr_em_paralelo("../output/input_ePCR.tsv", num_processos)
+        rodar_epcr_em_paralelo("output/input_ePCR.tsv", num_processos)
         
-        # comando_epcr = "bin/e-PCR output/input_ePCR.tsv output/sequencias.fasta M=400 N=3 T=3 G=3 U=+ O=output/primerBlast.txt"
-        
-        # try:
-        
-            # Executa o comando usando o subprocess
-            
-            # subprocess.run(comando_epcr, shell=True, check=True)
-            
-            # print("e-PCR executado com sucesso.")
-            
-        
-        # except subprocess.CalledProcessError as e:
-        
-            # print(f"Erro ao executar o e-PCR: {e}")
 
 
 
