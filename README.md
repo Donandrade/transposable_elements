@@ -25,9 +25,10 @@ Ensure you have the required dependencies installed:
 - e-PCR
 
 Clone this repository:
+
 ```sh
-git clone https://github.com/yourusername/repository.git
-cd repository
+https://github.com/Donandrade/transposable_elements.git
+cd transposable_elements
 ```
 
 ## Configuration
@@ -36,13 +37,17 @@ The script assumes the following directory structure:
 transposable_elements/
   ├── bin/
   │   ├── e-PCR
-  │   ├── primer3
+  │   ├── primer3/
+  ├── caulimovirus_mafft/
+  │   ├── data/
+  │   ├── output/
   ├── output/
-  │   ├── input_ePCR.tsv
   │   ├── sequencias.fasta
   │   ├── output.p3
   │   ├── primerBlast.txt
   │   ├── output_p3.tsv
+  ├── img/
+  │   ├──primerBlast.txt
   ├── src/
   │   ├── 01_primer_designANDselection.py
 ```
