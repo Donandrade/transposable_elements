@@ -52,44 +52,21 @@ Modify paths in the script as necessary.
 
 The script should be executed in two steps:
 
-When the user has the nucleotide sequence alignment in FASTA format:
+When the user has the nucleotide sequence alignment in FASTA format, as in the previous example, using an alignment of ERVs available in the caulimovirus_mafft/data/cluster_01_caulimovirus.aln directory of this project:
 
 ```sh
-python src/01_primer_designANDselection.py ../caulimovirus_mafft/data/cluster_01_caulimovirus.aln
+python src/01_primer_designANDselection.py caulimovirus_mafft/data/cluster_01_caulimovirus.aln
 ```
 
-This step processes the alignment and generates the necessary input files for e-PCR.
+This step processes the alignment and generates the necessary input files (primerBlast.txt) for e-PCR inside the "output" directory.
 
 When the user has already run step 1 and has the primerBlast.txt file:
 
 ```sh
-python src/01_primer_designANDselection.py <path to the alignment> ../caulimovirus_mafft/output/primerBlast.txt
+python src/01_primer_designANDselection.py <path to the alignment> output/primerBlast.txt
 ```
 
 This step uses the previously generated primer validation results to select the best primers.
-
-Run the script with:
-
-```sh
-python src/01_primer_designANDselection.py <alignment_file> <ePCR_results>
-```
-
-<alignment_file>: Input multiple sequence alignment in FASTA format.
-
-<ePCR_results>: Output file from e-PCR for primer validation.
-
-## Input
-
-The script takes:
-
-For Step 1: A multiple sequence alignment file in FASTA format (e.g., `../caulimovirus_mafft/data/cluster_01_caulimovirus.aln`).
-
-For Step 2: The output from e-PCR, specifically the primerBlast.txt file (e.g., `../caulimovirus_mafft/output/primerBlast.txt`).
-The script takes:
-
-A multiple sequence alignment file in FASTA format.
-
-The output from e-PCR (if running in subsequent stages).
 
 ## Output
 The script generates several output files in the `output/` directory:
